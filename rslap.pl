@@ -10,7 +10,7 @@
 # Usage:
 # /rslap <nick>
 # Slaps <nick> with a random slap
-# /rslapinfo
+# /rslap_info
 # This tells you how many messages there are, and prints them
 #
 # History:
@@ -49,7 +49,7 @@ sub rslap_start
 	if (-r $file)
 	{
 		weechat::hook_command("rslap", "Slap a nick with a random string", "nickname", "nickname: Nick to slap", "nicks", "rslap", "");
-		weechat::hook_command("rslapinfo", "Prints out the current strings /rslap will use", "", "", "", "slap_info", "");
+		weechat::hook_command("rslap_info", "Prints out the current strings /rslap will use", "", "", "", "slap_info", "");
 
 		open FILE, $file;
 		@lines = <FILE>;
