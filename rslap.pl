@@ -72,9 +72,12 @@ sub rslap_start
 sub slap_info
 {
 	weechat::print ("", "Number of available strings: ".weechat::color("bold").@lines.weechat::color("-bold")."\n");
+	$max_align = length(@lines);
+	$count = 1;
 	foreach (@lines)
 	{
-		weechat::print ("", "\t  ".$_."\n");
+		weechat::print ("","\t ".(" " x ($max_align - length($count))).$count.": ".$_."\n");
+		$count++;
 	}
 	return weechat::WEECHAT_RC_OK;
 }
