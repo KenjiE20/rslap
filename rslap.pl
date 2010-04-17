@@ -85,7 +85,7 @@ sub rslap_info
 
 sub rslap_add
 {
-	$text = $_[2] if ($_[2]);
+	my $text = $_[2] if ($_[2]);
 	if ($text)
 	{
 		push (@lines, $text);
