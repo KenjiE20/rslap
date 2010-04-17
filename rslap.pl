@@ -126,10 +126,10 @@ sub rslap_make_file
 		"dusts off a kitchen towel and slaps it at \$nick";
 	print FILE $defs;
 	close (FILE);
-        if (!(-r $file))
-        {
+	if (!(-r $file))
+	{
 		weechat::print ("", weechat::prefix("error")."Problem creating file: $file\n".
-			weechat::prefix("error")."Make sure you can write to the location.");
+		weechat::prefix("error")."Make sure you can write to the location.");
 		return weechat::WEECHAT_RC_ERROR;
 	}
 	else
