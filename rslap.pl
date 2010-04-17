@@ -48,7 +48,7 @@ sub rslap_start
 {
 	if (-r $file)
 	{
-		weechat::hook_command("rslap", "Slap a nick with a random string", "nickname", "nickname: Nick to slap", "nicks", "rslap", "");
+		weechat::hook_command("rslap", "Slap a nick with a random string", "nickname", "nickname: Nick to slap", "%(nicks)", "rslap", "");
 		weechat::hook_command("rslap_info", "Prints out the current strings /rslap will use", "", "", "", "rslap_info", "");
 
 		open FILE, $file;
