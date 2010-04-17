@@ -13,7 +13,15 @@
 # /rslap_info
 # This tells you how many messages there are, and prints them
 #
+# /set plugins.var.perl.rslap.slapback
+# Sets the slapback, takes "off", "on/random", or "n" where n
+# is a valid entry number
+
 # History:
+# 2010-mm-dd, KenjiE20 <longbow@longbowslair.co.uk>:
+#	v1.3	-feature: Ability to add/remove entries
+#		-feature: Can specify which string /rslap will use
+#		-feature: Slapback with specified/random string
 # 2009-08-10, KenjiE20 <longbow@longbowslair.co.uk>:
 #	v1.2:	Correct /help format to match weechat base
 # 2009-07-28, KenjiE20 <longbow@longbowslair.co.uk>:
@@ -21,7 +29,8 @@
 #		and strip out comments/blank lines
 # 2009-07-09, KenjiE20 <longbow@longbowslair.co.uk>:
 #	v1.0:	Initial Public Release
-#
+
+
 # Copyright (c) 2009 by KenjiE20 <longbow@longbowslair.co.uk>
 #
 # This program is free software; you can redistribute it and/or modify
@@ -51,7 +60,7 @@ sub rslap_start
 {
 	if (-r $file)
 	{
-		weechat::hook_command("rslap", "Slap a nick with a random string", "nickname [entry]", "nickname: Nick to slap\n   entry: which entry number to use (/rslap_info for the list)", "%(nicks)", "rslap", "");
+		weechat::hook_command("rslap", "Slap a nick with a random string", "nickname [entry]", "nickname: Nick to slap\n   entry: which entry number to use (/rslap_info for the list)\n\n /set plugins.var.perl.rslap.slapback\n  Sets the slapback, takes \"off\", \"on/random\", or \"n\" where n is a valid entry number", "%(nicks)", "rslap", "");
 		weechat::hook_command("rslap_info", "Prints out the current strings /rslap will use", "", "", "", "rslap_info", "");
 		weechat::hook_command("rslap_add", "Add a new slap entry", "[slap string]", "", "", "rslap_add", "");
 		weechat::hook_command("rslap_remove", "Remove a slap entry", "[entry number]", "", "", "rslap_remove", "");
