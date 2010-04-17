@@ -30,7 +30,6 @@
 # 2009-07-09, KenjiE20 <longbow@longbowslair.co.uk>:
 #	v1.0:	Initial Public Release
 
-
 # Copyright (c) 2009-2010 by KenjiE20 <longbow@longbowslair.co.uk>
 #
 # This program is free software; you can redistribute it and/or modify
