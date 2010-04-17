@@ -48,7 +48,7 @@ sub rslap_start
 {
 	if (-r $file)
 	{
-		weechat::hook_command("rslap", "Slap a nick with a random string", "nickname", "nickname: Nick to slap", "%(nicks)", "rslap", "");
+		weechat::hook_command("rslap", "Slap a nick with a random string", "nickname [entry]", "nickname: Nick to slap\n   entry: which entry number to use (/rslap_info for the list)", "%(nicks)", "rslap", "");
 		weechat::hook_command("rslap_info", "Prints out the current strings /rslap will use", "", "", "", "rslap_info", "");
 		weechat::hook_command("rslap_add", "Add a new slap entry", "[slap string]", "", "", "rslap_add", "");
 		weechat::hook_command("rslap_remove", "Remove a slap entry", "[entry number]", "", "", "rslap_remove", "");
@@ -127,17 +127,30 @@ sub rslap_remove
 sub rslap
 {
 	$buffer = $_[1];
-	$nick = $_[2];
+	$args = $_[2];
 	if (weechat::buffer_get_string($buffer, "plugin") eq "irc")
 	{
+		($nick, my $number) = split(/ /,$args);
 		if ($nick eq "")
 		{
 			weechat::print ("", weechat::prefix("error")."No nick given");
 		}
 		else
 		{
-			$randslap = int(rand(@lines));
-			$str = $lines[$randslap];
+			if ($number)
+			{
+				$number--;
+				if (!$lines[$number])
+				{
+					weechat::print ($buffer, weechat::prefix("error")."Not a valid entry");
+					return weechat::WEECHAT_RC_OK;
+				}
+			}
+			else
+			{
+				$number = int(rand(@lines));
+			}
+			$str = $lines[$number];
 			$str =~ s/\$nick/$nick/;
 			weechat::command ($buffer, "/me ".$str);
 		}
