@@ -49,7 +49,7 @@ sub rslap_start
 	if (-r $file)
 	{
 		weechat::hook_command("rslap", "Slap a nick with a random string", "nickname", "nickname: Nick to slap", "nicks", "rslap", "");
-		weechat::hook_command("rslap_info", "Prints out the current strings /rslap will use", "", "", "", "slap_info", "");
+		weechat::hook_command("rslap_info", "Prints out the current strings /rslap will use", "", "", "", "rslap_info", "");
 
 		open FILE, $file;
 		@lines = <FILE>;
@@ -69,7 +69,7 @@ sub rslap_start
 	return weechat::WEECHAT_RC_OK;
 }
 
-sub slap_info
+sub rslap_info
 {
 	weechat::print ("", "Number of available strings: ".weechat::color("bold").@lines.weechat::color("-bold")."\n");
 	$max_align = length(@lines);
