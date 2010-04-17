@@ -1,6 +1,6 @@
 #
 # rslap.pl - Random slap strings for weechat 0.3.0
-# Version 1.2
+# Version 1.3
 #
 # Let's you /slap a nick but with a random string
 # Customisable via the 'rslap' file in your config dir
@@ -31,7 +31,7 @@
 #	v1.0:	Initial Public Release
 
 
-# Copyright (c) 2009 by KenjiE20 <longbow@longbowslair.co.uk>
+# Copyright (c) 2009-2010 by KenjiE20 <longbow@longbowslair.co.uk>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -47,7 +47,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-weechat::register("rslap", "KenjiE20", "1.2", "GPL3", "Slap Randomiser", "", "");
+weechat::register("rslap", "KenjiE20", "1.3", "GPL3", "Slap Randomiser", "", "");
 
 $file = weechat::info_get("weechat_dir", "")."/rslap";
 my @lines;
