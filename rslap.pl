@@ -42,7 +42,10 @@ weechat::register("rslap", "KenjiE20", "1.2", "GPL3", "Slap Randomiser", "", "")
 
 $file = weechat::info_get("weechat_dir", "")."/rslap";
 my @lines;
+$lastrun = 0;
+$rslap_slapback_hook = 0;
 rslap_start();
+rslap_slapback_toggle("","",weechat::config_get_plugin ("slapback"));
 
 sub rslap_start
 {
@@ -52,6 +55,13 @@ sub rslap_start
 		weechat::hook_command("rslap_info", "Prints out the current strings /rslap will use", "", "", "", "rslap_info", "");
 		weechat::hook_command("rslap_add", "Add a new slap entry", "[slap string]", "", "", "rslap_add", "");
 		weechat::hook_command("rslap_remove", "Remove a slap entry", "[entry number]", "", "", "rslap_remove", "");
+
+		weechat::hook_config("plugins.var.perl.rslap.slapback", "rslap_slapback_toggle", "");
+
+		if (!(weechat::config_is_set_plugin ("slapback")))
+		{
+			weechat::config_set_plugin("slapback", "off");
+		}
 
 		open FILE, $file;
 		@lines = <FILE>;
@@ -126,6 +136,30 @@ sub rslap_remove
 	}
 }
 
+sub rslap_slapback_toggle
+{
+	$point = $_[0];
+	$name = $_[1];
+	$value = $_[2];
+	
+	if ($value eq "off")
+	{
+		if ($rslap_slapback_hook)
+		{
+			weechat::unhook($rslap_slapback_hook);
+			$rslap_slapback_hook = 0;
+		}
+	}
+	elsif ($value ne "off")
+	{
+		if (!$rslap_slapback_hook)
+		{
+			$rslap_slapback_hook = weechat::hook_print("", "", "", 1, "rslap_slapback_cb", "");
+		}
+	}
+	return weechat::WEECHAT_RC_OK;
+}
+
 sub rslap
 {
 	$buffer = $_[1];
@@ -139,7 +173,7 @@ sub rslap
 		}
 		else
 		{
-			if ($number)
+			if ($number =~ m/^\d+$/)
 			{
 				$number--;
 				if (!$lines[$number])
@@ -154,6 +188,7 @@ sub rslap
 			}
 			$str = $lines[$number];
 			$str =~ s/\$nick/$nick/;
+			$lastrun = time;
 			weechat::command ($buffer, "/me ".$str);
 		}
 	}
@@ -162,6 +197,47 @@ sub rslap
 		weechat::print ($buffer, weechat::prefix("error")."Must be used on an IRC buffer");
 	}
 	return weechat::WEECHAT_RC_OK;
+}
+
+sub rslap_slapback_cb
+{
+	$cb_datap = $_[0];
+	$cb_bufferp = $_[1];
+	$cb_date = $_[2];
+	$cb_tags = $_[3];
+	$cb_disp = $_[4];
+	$cb_high = $_[5];
+	$cb_prefix = $_[6];
+	$cb_msg = $_[7];
+	
+	$bufname = weechat::buffer_get_string($cb_bufferp, 'name');
+	# Only do something if a) IRC message b) is an action c) displayed and d) is a channel
+	if ($cb_tags =~ /irc_privmsg/ && $cb_tags =~ /irc_action/ && $cb_disp eq "1" && $bufname =~ /.*\.[#&\+!].*/)
+	{
+		# Anti-recursive
+		if ((time - $lastrun) < 10)
+		{
+			return weechat::WEECHAT_RC_OK;
+		}
+		# Strip colour
+		$cb_msg = weechat::string_remove_color($cb_msg, "");
+		# Snip sender from message
+		$from_nick = substr($cb_msg, 0, index($cb_msg, " "));
+		$cb_msg = substr($cb_msg, length($from_nick));
+		# check for our nick and slap in message
+		$cur_nick = weechat::buffer_get_string($cb_bufferp, "localvar_nick");
+		if ($from_nick ne $cur_nick && $cb_msg =~ /slap/ && $cb_msg =~ /\s$cur_nick(\s|$)/)
+		{
+			if (weechat::config_get_plugin("slapback") =~ m/^\d+$/)
+			{
+				rslap("", $cb_bufferp, $from_nick." ".weechat::config_get_plugin("slapback"));
+			}
+			else
+			{
+				rslap("", $cb_bufferp, $from_nick);
+			}
+		}
+	}
 }
 
 sub rslap_make_file
