@@ -50,6 +50,7 @@ sub rslap_start
 	{
 		weechat::hook_command("rslap", "Slap a nick with a random string", "nickname", "nickname: Nick to slap", "%(nicks)", "rslap", "");
 		weechat::hook_command("rslap_info", "Prints out the current strings /rslap will use", "", "", "", "rslap_info", "");
+		weechat::hook_command("rslap_add", "Add a new slap string", "[slap string]", "", "", "rslap_add", "");
 
 		open FILE, $file;
 		@lines = <FILE>;
@@ -80,6 +81,21 @@ sub rslap_info
 		$count++;
 	}
 	return weechat::WEECHAT_RC_OK;
+}
+
+sub rslap_add
+{
+	$text = $_[2] if ($_[2]);
+	if ($text)
+	{
+		push (@lines, $text);
+		weechat::print("", "Added entry ".@lines." as: \"".$text."\"");
+		return weechat::WEECHAT_RC_OK;
+	}
+	else
+	{
+		return weechat::WEECHAT_RC_OK;
+	}
 }
 
 sub rslap
