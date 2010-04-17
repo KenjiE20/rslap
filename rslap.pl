@@ -50,7 +50,8 @@ sub rslap_start
 	{
 		weechat::hook_command("rslap", "Slap a nick with a random string", "nickname", "nickname: Nick to slap", "%(nicks)", "rslap", "");
 		weechat::hook_command("rslap_info", "Prints out the current strings /rslap will use", "", "", "", "rslap_info", "");
-		weechat::hook_command("rslap_add", "Add a new slap string", "[slap string]", "", "", "rslap_add", "");
+		weechat::hook_command("rslap_add", "Add a new slap entry", "[slap string]", "", "", "rslap_add", "");
+		weechat::hook_command("rslap_remove", "Remove a slap entry", "[entry number]", "", "", "rslap_remove", "");
 
 		open FILE, $file;
 		@lines = <FILE>;
@@ -91,6 +92,31 @@ sub rslap_add
 		push (@lines, $text);
 		weechat::print("", "Added entry ".@lines." as: \"".$text."\"");
 		return weechat::WEECHAT_RC_OK;
+	}
+	else
+	{
+		return weechat::WEECHAT_RC_OK;
+	}
+}
+
+sub rslap_remove
+{
+	my $entry = $_[2] if ($_[2]);
+	if ($entry =~ m/^\d+/)
+	{
+		$entry--;
+		if ($lines[$entry])
+		{
+			$removed = $lines[$entry];
+			$lines[$entry] = '';
+			@lines = grep /\S/, @lines;
+			weechat::print("", "Removed entry ".weechat::color("bold").($entry + 1).weechat::color("-bold")." (".$removed.")");
+			return weechat::WEECHAT_RC_OK;
+		}
+		else
+		{
+			weechat::print ("", weechat::prefix("error")."Not a valid entry");
+		}
 	}
 	else
 	{
