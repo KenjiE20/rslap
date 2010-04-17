@@ -91,6 +91,7 @@ sub rslap_add
 	{
 		push (@lines, $text);
 		weechat::print("", "Added entry ".@lines." as: \"".$text."\"");
+		rslap_update_file();
 		return weechat::WEECHAT_RC_OK;
 	}
 	else
@@ -111,6 +112,7 @@ sub rslap_remove
 			$lines[$entry] = '';
 			@lines = grep /\S/, @lines;
 			weechat::print("", "Removed entry ".weechat::color("bold").($entry + 1).weechat::color("-bold")." (".$removed.")");
+			rslap_update_file();
 			return weechat::WEECHAT_RC_OK;
 		}
 		else
@@ -193,4 +195,21 @@ sub rslap_make_file
 		rslap_start();
 		return weechat::WEECHAT_RC_OK;
 	}
+}
+
+sub rslap_update_file
+{
+	$defs = '';
+	foreach (@lines)
+	{
+		$defs = $defs."\n".$_;
+	}
+	unless(open (FILE, ">", $file))
+	{
+		weechat::print ("", weechat::prefix("error")."Cannot write to file: $file");
+		return weechat::WEECHAT_RC_ERROR;
+	}
+	print FILE $defs;
+	close (FILE);
+	return weechat::WEECHAT_RC_OK;
 }
