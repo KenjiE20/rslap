@@ -253,6 +253,7 @@ sub rslap_slapback_cb
 			}
 		}
 	}
+	return weechat::WEECHAT_RC_OK;
 }
 
 sub rslap_make_file
