@@ -11,8 +11,14 @@
 # /rslap <nick> [<entry]>
 #  Slaps <nick> with a random slap, entry will use that entry
 #  number instead of a random one
+#
 # /rslap_info
 #  This tells you how many messages there are, and prints them
+#
+# /rslap_add <string to add>
+# /rslap_remove <entry id>
+#  Adds / removes string/id from the available list and attempts
+#  to update the rslap file
 #
 # /set plugins.var.perl.rslap.slapback
 #  Sets the slapback, takes "off", "on/random", or "n" where n
