@@ -9,14 +9,14 @@
 #
 # Usage:
 # /rslap <nick> [<entry]>
-# Slaps <nick> with a random slap, entry will use that entry number
-# instead of a random one
+#  Slaps <nick> with a random slap, entry will use that entry
+#  number instead of a random one
 # /rslap_info
-# This tells you how many messages there are, and prints them
+#  This tells you how many messages there are, and prints them
 #
 # /set plugins.var.perl.rslap.slapback
-# Sets the slapback, takes "off", "on/random", or "n" where n
-# is a valid entry number
+#  Sets the slapback, takes "off", "on/random", or "n" where n
+#  is a valid entry number
 
 # History:
 # 2010-mm-dd, KenjiE20 <longbow@longbowslair.co.uk>:
