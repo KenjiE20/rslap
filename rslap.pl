@@ -8,8 +8,9 @@
 # Use '$nick' to denote where a nick should go
 #
 # Usage:
-# /rslap <nick>
-# Slaps <nick> with a random slap
+# /rslap <nick> [<entry]>
+# Slaps <nick> with a random slap, entry will use that entry number
+# instead of a random one
 # /rslap_info
 # This tells you how many messages there are, and prints them
 #
