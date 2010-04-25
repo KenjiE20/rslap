@@ -25,7 +25,7 @@
 #  is a valid entry number
 
 # History:
-# 2010-mm-dd, KenjiE20 <longbow@longbowslair.co.uk>:
+# 2010-04-25, KenjiE20 <longbow@longbowslair.co.uk>:
 #	v1.3	-feature: Ability to add/remove entries
 #		-feature: Can specify which string /rslap will use
 #		-feature: Slapback with specified/random string
