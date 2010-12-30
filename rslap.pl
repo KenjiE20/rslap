@@ -181,14 +181,14 @@ sub rslap
 	$args = $_[2];
 	if (weechat::buffer_get_string($buffer, "plugin") eq "irc")
 	{
-		($nick, my $number) = split(/ /,$args);
+		($nick, $number) = split(/ /,$args);
 		if ($nick eq "")
 		{
 			weechat::print ("", weechat::prefix("error")."No nick given");
 		}
 		else
 		{
-			if ($number =~ m/^\d+$/)
+			if (defined $number && $number =~ m/^\d+$/)
 			{
 				$number--;
 				if (!$lines[$number])
